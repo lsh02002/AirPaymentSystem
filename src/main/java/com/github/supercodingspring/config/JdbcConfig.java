@@ -16,7 +16,8 @@ public class JdbcConfig {
     public DataSource dataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setUsername("root");
-        dataSource.setPassword("113011");
+        //암호는 따로 설정하였습니다.
+        dataSource.setPassword("******");
         dataSource.setDriverClassName("org.mariadb.jdbc.Driver");
         dataSource.setUrl("jdbc:mariadb://127.0.0.1:3306/chapter_97");
         return dataSource;
