@@ -31,9 +31,8 @@ public class ElectronicStoreItemJdbcDao implements ElectronicStoreItemRepository
     }
 
     @Override
-    public Optional<List<ItemEntity>> findAllItems() {
-        List<ItemEntity> itemEntities = jdbcTemplate.query("SELECT * FROM item", itemEntityRowMapper);
-        return Optional.of(itemEntities);
+    public List<ItemEntity> findAllItems() {
+        return jdbcTemplate.query("SELECT * FROM item", itemEntityRowMapper);
     }
 
     @Override

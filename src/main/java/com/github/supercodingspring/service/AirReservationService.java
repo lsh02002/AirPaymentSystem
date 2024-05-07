@@ -39,7 +39,11 @@ public class AirReservationService {
         String likePlace = userEntity.getLikeTravelPlace();
 
         List<AirlineTicket> airlineTickets
-                = airlineTicketRepository.findAllAirlineTicketsWithPlaceAndTicketType(likePlace, ticketType).orElseThrow(()->new CustomException(ExceptionStatus.POST_IS_EMPTY));
+                = airlineTicketRepository.findAllAirlineTicketsWithPlaceAndTicketType(likePlace, ticketType);
+
+        if(airlineTickets.isEmpty()){
+            throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
+        };
 
         return airlineTickets.stream().map(Ticket::new).collect(Collectors.toList());
     }
@@ -58,7 +62,11 @@ public class AirReservationService {
 
         // 2. price 등의 정보 불러오기
         List<AirlineTicketAndFlightInfo> airlineTicketAndFlightInfos
-                = airlineTicketRepository.findAllAirLineTicketAndFlightInfo(airlineTicketId).orElseThrow(()->new CustomException(ExceptionStatus.POST_IS_EMPTY));
+                = airlineTicketRepository.findAllAirLineTicketAndFlightInfo(airlineTicketId);
+
+        if(airlineTicketAndFlightInfos.isEmpty()){
+            throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
+        }
 
         // 3. reservation 생성
         Reservation reservation = new Reservation(passengerId, airlineTicketId);

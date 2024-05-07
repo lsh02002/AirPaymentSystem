@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ElectronicStoreItemRepository {
 
-    Optional<List<ItemEntity>> findAllItems();
+    List<ItemEntity> findAllItems();
 
     Optional<Integer> saveItem(ItemEntity itemEntity);
 

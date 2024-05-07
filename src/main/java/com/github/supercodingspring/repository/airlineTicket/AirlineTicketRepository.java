@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface AirlineTicketRepository{
 
-   Optional<List<AirlineTicket>> findAllAirlineTicketsWithPlaceAndTicketType(String likePlace, String ticketType);
+   List<AirlineTicket> findAllAirlineTicketsWithPlaceAndTicketType(String likePlace, String ticketType);
 
-    Optional<List<AirlineTicketAndFlightInfo>> findAllAirLineTicketAndFlightInfo(Integer airlineTicketId);
+    List<AirlineTicketAndFlightInfo> findAllAirLineTicketAndFlightInfo(Integer airlineTicketId);
 }

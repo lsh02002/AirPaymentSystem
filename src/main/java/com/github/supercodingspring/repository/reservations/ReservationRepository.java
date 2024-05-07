@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface ReservationRepository {
     Boolean saveReservation(Reservation reservation);
-    Optional<List<Reservation>> findReservationByPassengerIdAndTicketId(Integer passengerId, Integer ticketId);
+    List<Reservation> findReservationByPassengerIdAndTicketId(Integer passengerId, Integer ticketId);
 
     void setReservationConfirmedById(Integer reservationId);
 }

@@ -36,7 +36,7 @@ public class AirPaymentService {
 
         for(int i=0; i<userIds.size(); i++){
             Passenger passenger = passengerReposiotry.findPassengerByUserId(userIds.get(i)).get();
-            List<Reservation> reservations = reservationRepository.findReservationByPassengerIdAndTicketId(passenger.getPassengerId(), airlineTicketIds.get(i)).get();
+            List<Reservation> reservations = reservationRepository.findReservationByPassengerIdAndTicketId(passenger.getPassengerId(), airlineTicketIds.get(i));
 
             if(reservations.size()>=2) throw new CustomException(ExceptionStatus.INVALID_RESPONSE);
             else if(reservations.isEmpty()){

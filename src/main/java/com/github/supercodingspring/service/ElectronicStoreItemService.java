@@ -23,7 +23,12 @@ public class ElectronicStoreItemService {
     private StoreSalesRepository storeSalesRepository;
 
     public List<Item> findAllItem() throws CustomException {
-        List<ItemEntity> itemEntities = electronicStoreItemRepository.findAllItems().orElseThrow(()->new CustomException(ExceptionStatus.POST_IS_EMPTY));
+        List<ItemEntity> itemEntities = electronicStoreItemRepository.findAllItems();
+
+        if(itemEntities.isEmpty()){
+            throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
+        }
+
         return itemEntities.stream().map(Item::new).collect(Collectors.toList());
     }
 
@@ -42,7 +47,11 @@ public class ElectronicStoreItemService {
     }
 
     public List<Item> findItemsByIds(List<String> ids) throws CustomException{
-        List<ItemEntity> itemEntities = electronicStoreItemRepository.findAllItems().orElseThrow(()->new CustomException(ExceptionStatus.POST_IS_EMPTY));;
+        List<ItemEntity> itemEntities = electronicStoreItemRepository.findAllItems();
+
+        if(itemEntities.isEmpty()){
+            throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
+        }
         return itemEntities.stream()
                                        .map(Item::new)
                                        .filter((item -> ids.contains(item.getId())))

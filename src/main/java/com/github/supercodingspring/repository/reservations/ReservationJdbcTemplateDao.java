@@ -37,9 +37,8 @@ public class ReservationJdbcTemplateDao implements ReservationRepository {
     }
 
     @Override
-    public Optional<List<Reservation>> findReservationByPassengerIdAndTicketId(Integer passengerId, Integer ticketId) {
-        List<Reservation> reservations = template.query("SELECT * FROM reservation WHERE passenger_id = ? AND airline_ticket_id = ? ", ReservationRowMapper, passengerId, ticketId);
-        return Optional.of(reservations);
+    public List<Reservation> findReservationByPassengerIdAndTicketId(Integer passengerId, Integer ticketId) {
+        return template.query("SELECT * FROM reservation WHERE passenger_id = ? AND airline_ticket_id = ? ", ReservationRowMapper, passengerId, ticketId);
     }
 
     @Override
