@@ -3,9 +3,11 @@ package com.github.supercodingspring.web.dto.airline;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.supercodingspring.repository.airlineTicket.AirlineTicket;
+import lombok.Getter;
 
 import java.time.format.DateTimeFormatter;
 
+@Getter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Ticket {
     private String depart;
@@ -17,33 +19,12 @@ public class Ticket {
     public Ticket() {
     }
 
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     public Ticket(AirlineTicket airlineTicket){
         this.ticketId = airlineTicket.getTicketId();
         this.depart = airlineTicket.getDepartureLocation();
         this.arrival = airlineTicket.getArrivalLocation();
         this.departureTime = airlineTicket.getDepartureAt().format(formatter);
         this.returnTime = airlineTicket.getReturnAt().format(formatter);
-
-    }
-
-    public String getDepart() {
-        return depart;
-    }
-
-    public String getArrival() {
-        return arrival;
-    }
-
-    public String getDepartureTime() {
-        return departureTime;
-    }
-
-    public String getReturnTime() {
-        return returnTime;
-    }
-
-    public Integer getTicketId() {
-        return ticketId;
     }
 }

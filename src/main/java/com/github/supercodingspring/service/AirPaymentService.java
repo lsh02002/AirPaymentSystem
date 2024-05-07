@@ -1,5 +1,7 @@
 package com.github.supercodingspring.service;
 
+import com.github.supercodingspring.config.customExceptionHandler.CustomException;
+import com.github.supercodingspring.config.customExceptionHandler.ExceptionStatus;
 import com.github.supercodingspring.repository.passenger.Passenger;
 import com.github.supercodingspring.repository.passenger.PassengerReposiotry;
 import com.github.supercodingspring.repository.payment.PaymentRepository;
@@ -20,25 +22,25 @@ public class AirPaymentService {
     ReservationRepository reservationRepository;
     PaymentRepository paymentRepository;
 
-    @Transactional(transactionManager = "tm")
-    public Integer makePayment(PaymentRequest request){
+    @Transactional(transactionManager = "tm2")
+    public Integer makePayment(PaymentRequest request) throws CustomException {
 
         List<Integer> userIds = request.getUserIds();
         List<Integer> airlineTicketIds = request.getAirlineTicketIds();
 
         if(userIds.size() != airlineTicketIds.size()){
-            throw new RuntimeException("요청하신 사용자와 티켓의 갯수가 맛지 않습니다.");
+            throw new CustomException(ExceptionStatus.BAD_REQUEST);
         }
 
         Integer successPayment = 0;
 
         for(int i=0; i<userIds.size(); i++){
-            Passenger passenger = passengerReposiotry.findPassengerByUserId(userIds.get(i));
-            List<Reservation> reservations = reservationRepository.findReservationByPassengerIdAndTicketId(passenger.getPassengerId(), airlineTicketIds.get(i));
+            Passenger passenger = passengerReposiotry.findPassengerByUserId(userIds.get(i)).get();
+            List<Reservation> reservations = reservationRepository.findReservationByPassengerIdAndTicketId(passenger.getPassengerId(), airlineTicketIds.get(i)).get();
 
-            if(reservations.size()>=2) throw new RuntimeException("예약 수가 2개이상입니다.");
+            if(reservations.size()>=2) throw new CustomException(ExceptionStatus.INVALID_RESPONSE);
             else if(reservations.isEmpty()){
-                throw new RuntimeException("에약한 내용이 없습니다");
+                throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
             }
 
             paymentRepository.makePayment(passenger.getPassengerId(), airlineTicketIds.get(i));

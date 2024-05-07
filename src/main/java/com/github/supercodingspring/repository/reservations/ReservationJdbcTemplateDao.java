@@ -10,13 +10,14 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ReservationJdbcTemplateDao implements ReservationRepository {
 
     private final JdbcTemplate template;
 
-    public ReservationJdbcTemplateDao(@Qualifier("jdbcTemplate") JdbcTemplate jdbcTemplate) {
+    public ReservationJdbcTemplateDao(@Qualifier("jdbcTemplate2") JdbcTemplate jdbcTemplate) {
         this.template = jdbcTemplate;
     }
 
@@ -36,8 +37,9 @@ public class ReservationJdbcTemplateDao implements ReservationRepository {
     }
 
     @Override
-    public List<Reservation> findReservationByPassengerIdAndTicketId(Integer passengerId, Integer ticketId) {
-        return template.query("SELECT * FROM reservation WHERE passenger_id = ? AND airline_ticket_id = ? ", ReservationRowMapper, passengerId, ticketId);
+    public Optional<List<Reservation>> findReservationByPassengerIdAndTicketId(Integer passengerId, Integer ticketId) {
+        List<Reservation> reservations = template.query("SELECT * FROM reservation WHERE passenger_id = ? AND airline_ticket_id = ? ", ReservationRowMapper, passengerId, ticketId);
+        return Optional.of(reservations);
     }
 
     @Override

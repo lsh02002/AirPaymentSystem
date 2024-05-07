@@ -6,12 +6,13 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class AirlineTicketJdbcTemplateDao implements AirlineTicketRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public AirlineTicketJdbcTemplateDao(@Qualifier("jdbcTemplate") JdbcTemplate jdbcTemplate) {
+    public AirlineTicketJdbcTemplateDao(@Qualifier("jdbcTemplate2") JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -39,17 +40,21 @@ public class AirlineTicketJdbcTemplateDao implements AirlineTicketRepository {
             ));
 
     @Override
-    public List<AirlineTicket> findAllAirlineTicketsWithPlaceAndTicketType(String likePlace, String ticketType) {
-        return jdbcTemplate.query("SELECT * FROM airline_ticket " +
+    public Optional<List<AirlineTicket>> findAllAirlineTicketsWithPlaceAndTicketType(String likePlace, String ticketType) {
+        List<AirlineTicket> airlineTickets = jdbcTemplate.query("SELECT * FROM airline_ticket " +
                                   "WHERE arrival_loc = ? AND ticket_type = ?", airlineTicketRowMapper, likePlace, ticketType);
+
+        return Optional.of(airlineTickets);
     }
 
     @Override
-    public List<AirlineTicketAndFlightInfo> findAllAirLineTicketAndFlightInfo(Integer airlineTicketId) {
-        return jdbcTemplate.query("SELECT A.ticket_id, A.tax, A.total_price, F.flight_price, F.charge " +
+    public Optional<List<AirlineTicketAndFlightInfo>> findAllAirLineTicketAndFlightInfo(Integer airlineTicketId) {
+        List<AirlineTicketAndFlightInfo> airlineTicketAndFlightInfos = jdbcTemplate.query("SELECT A.ticket_id, A.tax, A.total_price, F.flight_price, F.charge " +
                                   "    FROM airline_ticket A " +
                                   "         INNER JOIN flight F " +
                                   "         ON A.ticket_id = F.ticket_id " +
                                   "     WHERE A.ticket_id = ?", airlineTicketAndFlightInfoRowMapper, airlineTicketId);
+
+        return Optional.of(airlineTicketAndFlightInfos);
     }
 }

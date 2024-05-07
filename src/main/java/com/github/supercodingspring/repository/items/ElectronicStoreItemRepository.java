@@ -1,17 +1,20 @@
 package com.github.supercodingspring.repository.items;
 
+import com.github.supercodingspring.config.customExceptionHandler.CustomException;
+
 import java.util.List;
+import java.util.Optional;
 
 public interface ElectronicStoreItemRepository {
 
-    List<ItemEntity> findAllItems();
+    Optional<List<ItemEntity>> findAllItems();
 
-    Integer saveItem(ItemEntity itemEntity);
+    Optional<Integer> saveItem(ItemEntity itemEntity);
 
-    ItemEntity updateItemEntity(Integer idInt, ItemEntity itemEntity);
+    Optional<ItemEntity> updateItemEntity(Integer idInt, ItemEntity itemEntity);
 
     void deleteItem(int parseInt);
 
-    ItemEntity findItemById(Integer idInt);
+    Optional<ItemEntity> findItemById(Integer idInt) throws CustomException;
     void updateItemStock(Integer itemId, Integer i);
 }

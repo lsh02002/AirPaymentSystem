@@ -1,5 +1,7 @@
 package com.github.supercodingspring.repository.payment;
 
+import com.github.supercodingspring.config.customExceptionHandler.CustomException;
+import com.github.supercodingspring.config.customExceptionHandler.ExceptionStatus;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -12,7 +14,7 @@ import java.util.List;
 public class PaymentJdbcTemplateDao implements PaymentRepository{
     private final JdbcTemplate template;
 
-    public PaymentJdbcTemplateDao(@Qualifier("jdbcTemplate") JdbcTemplate template) {
+    public PaymentJdbcTemplateDao(@Qualifier("jdbcTemplate2") JdbcTemplate template) {
         this.template = template;
     }
 
@@ -25,17 +27,12 @@ public class PaymentJdbcTemplateDao implements PaymentRepository{
             ));
 
     @Override
-    public void makePayment(Integer passengerId, Integer reservationId) {
+    public void makePayment(Integer passengerId, Integer reservationId) throws CustomException {
         try {
             List<Payment> payments = template.query("SELECT * FROM payment WHERE passenger_id = ? AND reservation_id = ?", paymentRowMapper, passengerId, reservationId);
-
-            if(!payments.isEmpty()){
-                throw new Exception("이미 지불되었습니다.");
-            }
-
             template.update("INSERT INTO payment(passenger_id, reservation_id, pay_at) VALUES (?, ?, ?)", passengerId, reservationId, LocalDateTime.now());
         }catch (Exception e){
-            e.printStackTrace();
+            throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
         }
     }
 }

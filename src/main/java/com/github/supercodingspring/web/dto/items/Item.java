@@ -1,9 +1,15 @@
 package com.github.supercodingspring.web.dto.items;
 
 import com.github.supercodingspring.repository.items.ItemEntity;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
+@NoArgsConstructor
+@Getter
+@EqualsAndHashCode
 public class Item {
 
     private String id;
@@ -11,9 +17,6 @@ public class Item {
     private String type;
     private Integer price;
     private Spec spec;
-
-    public Item() {
-    }
 
     public Item(String id, ItemBody itemBody){
         this.id = id;
@@ -39,40 +42,4 @@ public class Item {
         this.spec = new Spec(itemEntity.getCpu(), itemEntity.getCapacity());
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public Spec getSpec() {
-        return spec;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Item)) {
-            return false;
-        }
-        Item item = (Item) o;
-        return id.equals(item.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
